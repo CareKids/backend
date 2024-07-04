@@ -20,7 +20,6 @@ import java.util.List;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
-    private final ModelMapper dtoModelMapper;
 
     public PageInfoDto listNotice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
