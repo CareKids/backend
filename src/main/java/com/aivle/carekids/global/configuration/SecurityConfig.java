@@ -9,6 +9,7 @@ import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
+import com.aivle.carekids.global.Variable.GlobelVar;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -68,6 +71,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository));
 
+        // CORS 설정 추가
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowCredentials(true);
+        corsConfig.addAllowedOrigin("http://localhost:3000"); // React 서버 주소
+        corsConfig.addAllowedHeader("*");
+        corsConfig.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
         http
                 //REST API 설정
                 .csrf(AbstractHttpConfigurer::disable)
@@ -89,8 +102,12 @@ public class SecurityConfig {
                 .logout(logoutConfig -> logoutConfig
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutService)
-                        .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext())))
-        ;
+                        .logoutSuccessHandler(((request, response, authentication) -> {
+                            SecurityContextHolder.clearContext();
+                            response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "login");
+                        })))
+                // CORS 설정 추가
+                .cors(cors -> cors.configurationSource(source));
 
         return http.build();
     }
