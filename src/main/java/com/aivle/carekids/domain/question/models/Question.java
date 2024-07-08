@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -26,6 +27,9 @@ public class Question extends BaseEntity {
 
     @Lob
     private String questionText;
+
+    @Lob
+    private String questionAnswer;
 
     private boolean questionCheck = false;
 

@@ -62,7 +62,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         jwtService.save(new RefreshToken(users.getUsersId(), refreshToken));
 
         // 헤더로 accessToken 전달
-//        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
+        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
 
         Cookie access_cookie = new Cookie(JwtConstants.ACCESS, accessToken);
         access_cookie.setMaxAge((int) (JwtConstants.ACCESS_EXP_TIME / 1000));     // 5분 설정

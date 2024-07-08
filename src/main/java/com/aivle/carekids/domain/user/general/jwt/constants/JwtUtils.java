@@ -122,7 +122,7 @@ public class JwtUtils {
     }
 
     public static UsernamePasswordAuthenticationToken getAuthenticationToken(DecodedJWT decodedJWT) {
-        String id = decodedJWT.getClaim("id").asString();
+        Long id = decodedJWT.getClaim("id").asLong();
         String role = decodedJWT.getClaim("role").asString();
 
         return new UsernamePasswordAuthenticationToken(id, null,
