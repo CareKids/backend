@@ -37,6 +37,9 @@ public class Question extends BaseEntity {
 
     private boolean secret = false;
 
+    @Lob
+    private String questionAnswer;
+
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<QuestionFile> questionFiles = new ArrayList<>();
 
