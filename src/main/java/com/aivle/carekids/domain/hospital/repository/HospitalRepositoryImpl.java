@@ -12,6 +12,7 @@ import java.awt.print.Pageable;
 
 import static com.aivle.carekids.domain.common.models.QRegion.region;
 import static com.aivle.carekids.domain.hospital.model.QHospital.hospital;
+import static com.aivle.carekids.domain.kindergarten.model.QKindergarten.kindergarten;
 
 @RequiredArgsConstructor
 public class HospitalRepositoryImpl implements HospitalRepositoryCustom{
@@ -20,8 +21,8 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom{
 
     @Override
     public RegionDto findRandomRegion() {
-        return jpaQueryFactory.select(new QRegionDto(region.regionId, region.regionName)).from(hospital)
-                .join(hospital.region, region)
+        return jpaQueryFactory.select(new QRegionDto(region.regionId, region.regionName)).from(kindergarten)
+                .join(kindergarten.region, region)
                 .orderBy(Expressions.numberTemplate(Integer.class, "function('RAND')").asc())
                 .limit(1)
                 .fetchOne();
