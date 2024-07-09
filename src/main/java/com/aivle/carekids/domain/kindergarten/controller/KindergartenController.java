@@ -1,7 +1,5 @@
 package com.aivle.carekids.domain.kindergarten.controller;
 
-import com.aivle.carekids.domain.hospital.dto.HospitalListDto;
-import com.aivle.carekids.domain.hospital.service.HospitalService;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenListDto;
 import com.aivle.carekids.domain.kindergarten.service.KindergartenService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
