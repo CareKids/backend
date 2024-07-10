@@ -1,9 +1,9 @@
-package com.aivle.carekids.domain.kindergarten.controller;
+package com.aivle.carekids.domain.playInfo.controller;
 
 import com.aivle.carekids.domain.common.dto.PageInfoDto;
-import com.aivle.carekids.domain.common.dto.SearchRegionDto;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
-import com.aivle.carekids.domain.kindergarten.service.KindergartenService;
+import com.aivle.carekids.domain.common.dto.SearchAgeTagDto;
+import com.aivle.carekids.domain.playInfo.dto.PlayInfoDetailDto;
+import com.aivle.carekids.domain.playInfo.service.PlayInfoService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -16,14 +16,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class KindergartenController {
+public class PlayInfoController {
 
-
-    private final KindergartenService kindergartenService;
+    private final PlayInfoService playInfoService;
     private final JwtUtils jwtUtils;
 
-    @GetMapping("/kindergarten")
-    public ResponseEntity<?> displayKindergarten(@CookieValue(name = "AccessToken", required = false) String accessToken,
+    @GetMapping("/playinfo")
+    public ResponseEntity<?> displayPlayInfo(@CookieValue(name = "AccessToken", required = false) String accessToken,
                                                  @CookieValue(name = "RefreshToken", required = false) String refreshToken,
                                                  @RequestParam(value = "page", defaultValue = "1")int page,
                                                  @RequestParam(value = "size", defaultValue = "12")int size){
@@ -31,7 +30,7 @@ public class KindergartenController {
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
         if (verifyMap.get("state") != null) { // 미가입 OR 로그아웃된 사용자인 경우
-            return ResponseEntity.ok(kindergartenService.displayKindergartenGuest(page - 1, size));
+            return ResponseEntity.ok(playInfoService.displayPlayInfoGuest(page - 1, size));
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -41,7 +40,7 @@ public class KindergartenController {
 
 
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
-        PageInfoDto pageInfoDto = kindergartenService.displayKindergartenUser(usersId, page - 1, size);
+        PageInfoDto pageInfoDto = playInfoService.displayPlayInfoUser(usersId, page - 1, size);
 
         if (pageInfoDto != null){
             return ResponseEntity.status(HttpStatus.OK).headers(headers).body(pageInfoDto);
@@ -50,25 +49,25 @@ public class KindergartenController {
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
     }
 
-    @GetMapping("/kindergarten/{id}")
-    public ResponseEntity<?> kindergartenDetail(@PathVariable Long id){
+    @GetMapping("/playinfo/{id}")
+    public ResponseEntity<?> playinfoDetail(@PathVariable Long id){
 
-        KindergartenDetailDto kindergartenDetailDto = kindergartenService.kindergartenDetail(id);
+        PlayInfoDetailDto playInfoDetailDto = playInfoService.playInfoDetail(id);
 
-        if (kindergartenDetailDto != null){ return ResponseEntity.ok(kindergartenDetailDto); }
+        if (playInfoDetailDto != null){ return ResponseEntity.ok(playInfoDetailDto); }
         return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
 
-    @PostMapping("/kindergarten/search")
-    public ResponseEntity<Object> searchKindergarten(@RequestBody SearchRegionDto searchRegionDto,
-                                                 @RequestParam(value = "page", defaultValue = "1")int page,
-                                                 @RequestParam(value = "size", defaultValue = "12")int size){
+    @PostMapping("/playinfo/search")
+    public ResponseEntity<Object> searchKindergarten(@RequestBody SearchAgeTagDto searchAgeTagDto,
+                                                     @RequestParam(value = "page", defaultValue = "1")int page,
+                                                     @RequestParam(value = "size", defaultValue = "12")int size){
 
-        PageInfoDto searchKindergartenListDto = kindergartenService.searchKindergarten(searchRegionDto, page - 1, size);
-        if (searchKindergartenListDto == null) {
+        PageInfoDto searchPlayInfoListDto = playInfoService.searchPlayInfo(searchAgeTagDto, page - 1, size);
+        if (searchPlayInfoListDto == null) {
             return ResponseEntity.badRequest().body(Map.of("message", "조회 대상이 존재하지 않습니다."));
         }
 
-        return ResponseEntity.ok(searchKindergartenListDto);
+        return ResponseEntity.ok(searchPlayInfoListDto);
     }
 }

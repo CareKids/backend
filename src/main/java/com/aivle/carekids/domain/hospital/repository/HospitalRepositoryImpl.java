@@ -7,6 +7,7 @@ import com.aivle.carekids.domain.common.dto.SearchRegionDto;
 import com.aivle.carekids.domain.common.models.DayType;
 import com.aivle.carekids.domain.hospital.dto.HospitalDetailDto;
 import com.aivle.carekids.domain.hospital.dto.HospitalListDto;
+import com.aivle.carekids.domain.hospital.dto.HospitalOperateTimeDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -64,8 +65,8 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        Map<Long, List<OperateTimeDto>> operateTimeByHospitalList = findOperateTimeByHospitalList(content);
-        content.forEach(c -> c.setOperateTimeDto(operateTimeByHospitalList.get(c.getHospitalId())));
+        Map<Long, List<HospitalOperateTimeDto>> operateTimeByHospitalList = findOperateTimeByHospitalList(content);
+        content.forEach(c -> c.setHospitalOperateTimeDto(operateTimeByHospitalList.get(c.getHospitalId())));
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital);
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -162,8 +163,8 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        Map<Long, List<OperateTimeDto>> operateTimeByHospitalList = findOperateTimeByHospitalList(content);
-        content.forEach(c -> c.setOperateTimeDto(operateTimeByHospitalList.get(c.getHospitalId())));
+        Map<Long, List<HospitalOperateTimeDto>> operateTimeByHospitalList = findOperateTimeByHospitalList(content);
+        content.forEach(c -> c.setHospitalOperateTimeDto(operateTimeByHospitalList.get(c.getHospitalId())));
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital);
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -177,12 +178,12 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         return isEmpty(query) ? null : hospital.hospitalName.containsIgnoreCase(query);
     }
 
-    private Map<Long, List<OperateTimeDto>> findOperateTimeByHospitalList(List<HospitalListDto> content) {
+    private Map<Long, List<HospitalOperateTimeDto>> findOperateTimeByHospitalList(List<HospitalListDto> content) {
         List<Long> hospitalIdList = content.stream().map(HospitalListDto::getHospitalId).toList();
 
         return jpaQueryFactory.select(
                         Projections.constructor(
-                                OperateTimeDto.class,
+                                HospitalOperateTimeDto.class,
                                 hospitalOperateTime.dayType,
                                 hospitalOperateTime.startTime,
                                 hospitalOperateTime.endTime,
@@ -190,7 +191,9 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                         ))
                 .from(hospitalOperateTime)
                 .where(hospitalOperateTime.hospital.hospitalId.in(hospitalIdList))
-                .fetch().stream().collect(Collectors.groupingBy(OperateTimeDto::getHospitalId));
+                .fetch().stream().collect(Collectors.groupingBy(HospitalOperateTimeDto::getHospitalId));
     }
+
+
 
 }

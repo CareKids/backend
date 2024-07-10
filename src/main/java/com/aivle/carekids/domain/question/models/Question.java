@@ -30,8 +30,6 @@ public class Question extends BaseEntity {
     @Lob
     private String questionText;
 
-    @Lob
-    private String questionAnswer;
 
     private boolean questionCheck = false;
 

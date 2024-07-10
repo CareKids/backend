@@ -23,7 +23,7 @@ public class HospitalListDto {
     private RegionDto hospitalRegion;
 
     @JsonProperty("operate-time")
-    private List<OperateTimeDto> operateTimeDto;
+    private List<HospitalOperateTimeDto> hospitalOperateTimeDto;
 
     public HospitalListDto(Long hospitalId, String hospitalName, HospitalType hospitalType,
                            RegionDto hospitalRegion) {

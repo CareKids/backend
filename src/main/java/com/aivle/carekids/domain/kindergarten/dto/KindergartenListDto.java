@@ -1,21 +1,17 @@
 package com.aivle.carekids.domain.kindergarten.dto;
 
+import com.aivle.carekids.domain.common.dto.OperateTimeDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
-import com.aivle.carekids.domain.common.models.DayOfWeek;
-import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.kindergarten.model.KindergartenOperateTime;
-import jakarta.persistence.*;
+import com.aivle.carekids.domain.common.models.DayType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 public class KindergartenListDto {
 
@@ -23,18 +19,14 @@ public class KindergartenListDto {
 
     private String kindergartenName;
 
-    private String kindergartenAddress;
-
-    private String kindergartenNewaddress;
-
-    private String kindergartenPhone;
-
     private RegionDto kindergartenRegion;
 
-    private DayOfWeek dayOfWeek;
+    @JsonProperty("operate-time")
+    private List<KindergartenOperateTimeDto> kindergartenOperateTimeDto;
 
-    private LocalTime startTime;
-
-    private LocalTime endTime;
-
+    public KindergartenListDto(Long kindergartenId, String kindergartenName, RegionDto kindergartenRegion) {
+        this.kindergartenId = kindergartenId;
+        this.kindergartenName = kindergartenName;
+        this.kindergartenRegion = kindergartenRegion;
+    }
 }
