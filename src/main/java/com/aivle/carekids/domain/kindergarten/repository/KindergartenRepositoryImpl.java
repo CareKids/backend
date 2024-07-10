@@ -112,7 +112,7 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
         content.setKindergartenOperateTimes(
                 jpaQueryFactory.select(
                                 Projections.constructor(
-                                        OperateTimeDto.class,
+                                        KindergartenOperateTimeDto.class,
                                         kindergartenOperateTime.dayType,
                                         kindergartenOperateTime.startTime,
                                         kindergartenOperateTime.endTime,

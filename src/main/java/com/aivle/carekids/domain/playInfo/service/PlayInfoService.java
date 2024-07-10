@@ -40,7 +40,7 @@ public class PlayInfoService {
                 playInfoPage.getNumber() + 1,
                 playInfoPage.getSize(),
                 playInfoPage.getNumberOfElements()
-        ), playInfoPage.getContent());
+        ), null, randAgeTag, playInfoPage.getContent());
     }
 
     public PageInfoDto displayPlayInfoUser(Long usersId, int page, int size) {
@@ -60,7 +60,7 @@ public class PlayInfoService {
                 playInfoPage.getNumber() + 1,
                 playInfoPage.getSize(),
                 playInfoPage.getNumberOfElements()
-        ), playInfoPage.getContent());
+        ), null, randAgeTag, playInfoPage.getContent());
     }
 
     public PlayInfoDetailDto playInfoDetail(Long playInfoId) {
@@ -79,6 +79,6 @@ public class PlayInfoService {
                 searchPlayInfoListDtos.getNumber() + 1,
                 searchPlayInfoListDtos.getSize(),
                 searchPlayInfoListDtos.getNumberOfElements()
-        ), searchPlayInfoListDtos.getContent());
+        ), null, searchAgeTagDto.getAgeTagDto(), searchPlayInfoListDtos.getContent());
     }
 }

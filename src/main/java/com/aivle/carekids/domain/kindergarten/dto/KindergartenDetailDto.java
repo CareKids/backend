@@ -25,7 +25,7 @@ public class KindergartenDetailDto {
 
     private RegionDto kindergartenRegion;
 
-    private List<OperateTimeDto> kindergartenOperateTimes = new ArrayList<>();
+    private List<KindergartenOperateTimeDto> kindergartenOperateTimes = new ArrayList<>();
 
     public KindergartenDetailDto(Long kindergartenId, String kindergartenName, String kindergartenAddress, String kindergartenNewaddress, String kindergartenPhone, RegionDto kindergartenRegion) {
         this.kindergartenId = kindergartenId;

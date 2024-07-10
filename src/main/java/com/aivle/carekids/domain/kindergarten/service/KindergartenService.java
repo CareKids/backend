@@ -4,12 +4,14 @@ import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 
 import com.aivle.carekids.domain.common.dto.SearchRegionDto;
+import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenListDto;
 import com.aivle.carekids.domain.kindergarten.repository.KindergartenRepository;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +27,15 @@ public class KindergartenService {
 
     private final KindergartenRepository kindergartenRepository;
     private final UsersRepository usersRepository;
+    private final RegionRepository regionRepository;
+
+    private final ModelMapper dtoModelMapper;
 
     public PageInfoDto displayKindergartenGuest(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
+        RegionDto regionDto = dtoModelMapper.map(regionRepository.findByRegionName("전체"), RegionDto.class);
         Page<KindergartenListDto> kindergartenPage = kindergartenRepository.findAllByOrderByUpdatedAtDescByPageByRegion(null, pageable);
 
         return new PageInfoDto(new PageInfoDto.PageInfo(
@@ -37,7 +43,7 @@ public class KindergartenService {
                 kindergartenPage.getNumber() + 1,
                 kindergartenPage.getSize(),
                 kindergartenPage.getNumberOfElements()
-        ), kindergartenPage.getContent());
+        ), regionDto, null, kindergartenPage.getContent());
     }
 
     public PageInfoDto displayKindergartenUser(Long usersId, int page, int size) {
@@ -55,7 +61,7 @@ public class KindergartenService {
                 kindergartenPage.getNumber() + 1,
                 kindergartenPage.getSize(),
                 kindergartenPage.getNumberOfElements()
-        ), kindergartenPage.getContent());
+        ), users.get().getUsersRegion(), null, kindergartenPage.getContent());
     }
 
     public KindergartenDetailDto kindergartenDetail(Long kindergartenId) {
@@ -74,6 +80,6 @@ public class KindergartenService {
                 searchKindergartenListDtos.getNumber() + 1,
                 searchKindergartenListDtos.getSize(),
                 searchKindergartenListDtos.getNumberOfElements()
-        ), searchKindergartenListDtos.getContent());
+        ), searchRegionDto.getRegionDto(), null, searchKindergartenListDtos.getContent());
     }
 }
