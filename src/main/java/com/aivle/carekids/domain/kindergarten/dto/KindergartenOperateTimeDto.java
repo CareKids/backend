@@ -17,7 +17,7 @@ public class KindergartenOperateTimeDto extends OperateTimeDto {
     private Long kindergartenId;
 
     public KindergartenOperateTimeDto(DayType dayType, LocalTime startTime, LocalTime endTime, Long kindergartenId) {
-        super(dayType, startTime, endTime);
+        super(dayType.getDayType(), startTime, endTime);
         this.kindergartenId = kindergartenId;
     }
 
