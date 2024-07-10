@@ -1,6 +1,5 @@
 package com.aivle.carekids.domain.hospital.dto;
 
-import com.aivle.carekids.domain.common.dto.OperateTimeDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.hospital.model.HospitalType;
 import com.fasterxml.jackson.annotation.JsonProperty;

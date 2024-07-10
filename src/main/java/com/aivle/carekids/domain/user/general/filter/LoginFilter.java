@@ -27,7 +27,6 @@ import java.io.IOException;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-//    private final JwtUtil jwtUtil;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -45,11 +44,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-
-//        System.out.println("success");
-//        System.out.println("this is request : "+request);
-//        System.out.println("this is chain : "+chain);
-//        System.out.println("this is authResult : "+authResult);
 
         Users users = ((CustomUserDetail) authResult.getPrincipal()).getUsers();
 
